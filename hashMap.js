@@ -65,11 +65,24 @@ function HashMap() {
       }
   }
 
+  function length() {
+
+    let count = 0;
+
+    for(i = 0; i < buckets.length; i++) {
+      const bucket = buckets[i];
+      count += bucket.length;
+    }
+
+    return count;
+  }
+
   return {
     set,
     get,
     has,
     remove,
+    length,
     _debugBuckets: buckets, // expose for debugging
   };
 }
@@ -77,14 +90,17 @@ function HashMap() {
 const map = HashMap();
 map.set("Carlos", "Dev");
 map.set("Sita", "Engineer");
+map.set("slkdfj", "oivni")
 map.set("Carlos", "CTO"); // Updates value
 
 console.log(JSON.stringify(map._debugBuckets, null, 2));
 
+console.log(map.length());
+
 // console.log(map.has("Carlos"));
 
-console.log(map.remove("Carlos"));
-console.log(JSON.stringify(map._debugBuckets, null, 2));
+// console.log(map.remove("Carlos"));
+// console.log(JSON.stringify(map._debugBuckets, null, 2));
 
 
 // console.log(map.get("Sita"));
