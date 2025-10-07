@@ -50,10 +50,26 @@ function HashMap() {
 
   }
 
+  function remove(key) {
+
+      const index = hash(key);
+      const bucket = buckets[index];
+
+      const found = bucket.find((entry) => entry.key === key);
+
+      if(found !== -1) {
+          bucket.splice(found, 1);
+        return true;
+      }else {
+        return false
+      }
+  }
+
   return {
     set,
     get,
     has,
+    remove,
     _debugBuckets: buckets, // expose for debugging
   };
 }
@@ -65,8 +81,10 @@ map.set("Carlos", "CTO"); // Updates value
 
 console.log(JSON.stringify(map._debugBuckets, null, 2));
 
-console.log(map.has("Carlos"));
-console.log(map.has("sdfksof"))
+// console.log(map.has("Carlos"));
+
+console.log(map.remove("Carlos"));
+console.log(JSON.stringify(map._debugBuckets, null, 2));
 
 
 // console.log(map.get("Sita"));
