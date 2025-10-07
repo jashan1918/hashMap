@@ -39,11 +39,21 @@ function HashMap() {
        return result? result.value : null;
   }
 
+  function has(key) {
 
-console.log(map.get("klsdffkjsd"))
+           const index = hash(key);
+       const bucket = buckets[index];
+
+       const result = bucket.find((entry) => entry.key === key);
+
+       return result? true : false;
+
+  }
+
   return {
     set,
     get,
+    has,
     _debugBuckets: buckets, // expose for debugging
   };
 }
@@ -54,5 +64,9 @@ map.set("Sita", "Engineer");
 map.set("Carlos", "CTO"); // Updates value
 
 console.log(JSON.stringify(map._debugBuckets, null, 2));
+
+console.log(map.has("Carlos"));
+console.log(map.has("sdfksof"))
+
 
 // console.log(map.get("Sita"));
