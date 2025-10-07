@@ -2,6 +2,8 @@ function HashMap() {
   const loadFactor = 0.75; //resize the hash table when its 75% full
   let capacity = 16; //initial siz of the array
 
+  let numItems = 0;
+
   const buckets = new Array(capacity).fill(null).map(() => []);
 
   function hash(key) {
@@ -27,6 +29,11 @@ function HashMap() {
       found.value = value;
     } else {
       bucket.push({key, value});
+      numItems++;
+    }
+
+    if(numsItems > loadFactor) {
+      capacity *= 2;
     }
   }
 
@@ -143,28 +150,5 @@ function HashMap() {
   };
 }
 
-const map = HashMap();
-map.set("Carlos", "Dev");
-map.set("Sita", "Engineer");
-map.set("slkdfj", "oivni")
-map.set("Carlos", "CTO"); // Updates value
 
-console.log(JSON.stringify(map._debugBuckets, null, 2));
-
-console.log(map.keys());
-console.log(map.values());
-console.log(map.entries());
-
-// map.clear();
-
-// console.log(JSON.stringify(map._debugBuckets,null,2));
-
-// console.log(map.length());
-
-// console.log(map.has("Carlos"));
-
-// console.log(map.remove("Carlos"));
-// console.log(JSON.stringify(map._debugBuckets, null, 2));
-
-
-// console.log(map.get("Sita"));
+export default HashMap;
