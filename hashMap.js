@@ -100,6 +100,21 @@ function HashMap() {
 
     return keysArr;
   }
+
+  function values() {
+
+    const valuesArr = [];
+
+    for(i = 0; i < buckets.length; i++) {
+      const bucket = buckets[i];
+
+      for(j = 0; j < bucket.length; j++) {
+        valuesArr.push(bucket[j].value);
+      }
+    }
+
+    return valuesArr;
+  }
   return {
     set,
     get,
@@ -108,6 +123,7 @@ function HashMap() {
     length,
     clear,
     keys,
+    values,
     _debugBuckets: buckets, // expose for debugging
   };
 }
@@ -121,6 +137,7 @@ map.set("Carlos", "CTO"); // Updates value
 console.log(JSON.stringify(map._debugBuckets, null, 2));
 
 console.log(map.keys());
+console.log(map.values());
 
 // map.clear();
 
