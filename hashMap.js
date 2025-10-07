@@ -30,10 +30,20 @@ function HashMap() {
     }
   }
 
+  function get(key) {
+       const index = hash(key);
+       const bucket = buckets[index];
 
+       const result = bucket.find((entry) => entry.key === key);
+
+       return result? result.value : null;
+  }
+
+
+console.log(map.get("klsdffkjsd"))
   return {
     set,
-   
+    get,
     _debugBuckets: buckets, // expose for debugging
   };
 }
