@@ -4,7 +4,7 @@ function HashMap() {
 
   let numItems = 0;
 
-  const buckets = new Array(capacity).fill(null).map(() => []);
+  let buckets = new Array(capacity).fill(null).map(() => []);
 
   function hash(key) {
     let hashCode = 0;
@@ -18,65 +18,71 @@ function HashMap() {
   }
 
   function set(key, value) {
-
     const index = hash(key);
     const bucket = buckets[index];
-    
-    const found = bucket.find((entry) => entry.key === key );
+
+    const found = bucket.find((entry) => entry.key === key);
 
     if (found) {
-      
       found.value = value;
     } else {
-      bucket.push({key, value});
+      bucket.push({ key, value });
       numItems++;
     }
 
-    if(numsItems > loadFactor) {
+    if (numItems / capacity > loadFactor) {
+      const oldBuckets = buckets;
       capacity *= 2;
+      buckets = new Array(capacity).fill(null).map(() => []);
+      numItems = 0;
+
+      for (let i = 0; i < oldBuckets.length; i++) {
+        const bucket = oldBuckets[i];
+        for (let j = 0; j < bucket.length; j++) {
+          const entry = bucket[j];
+          set(entry.key, entry.value); // re-insert into new buckets
+        }
+      }
     }
+    console.log(capacity);
   }
 
   function get(key) {
-       const index = hash(key);
-       const bucket = buckets[index];
+    const index = hash(key);
+    const bucket = buckets[index];
 
-       const result = bucket.find((entry) => entry.key === key);
+    const result = bucket.find((entry) => entry.key === key);
 
-       return result? result.value : null;
+    return result ? result.value : null;
   }
 
   function has(key) {
+    const index = hash(key);
+    const bucket = buckets[index];
 
-           const index = hash(key);
-       const bucket = buckets[index];
+    const result = bucket.find((entry) => entry.key === key);
 
-       const result = bucket.find((entry) => entry.key === key);
-
-       return result? true : false;
-
+    return result ? true : false;
   }
 
   function remove(key) {
+    const index = hash(key);
+    const bucket = buckets[index];
 
-      const index = hash(key);
-      const bucket = buckets[index];
+    const found = bucket.find((entry) => entry.key === key);
 
-      const found = bucket.find((entry) => entry.key === key);
-
-      if(found !== -1) {
-          bucket.splice(found, 1);
-        return true;
-      }else {
-        return false
-      }
+    if (found !== -1) {
+      bucket.splice(found, 1);
+      return true;
+    } else {
+      return false;
+    }
   }
 
   function length() {
-
     let count = 0;
 
-    for(i = 0; i < buckets.length; i++) {
+    for ( let i = 0; i < buckets.length; i++) {
       const bucket = buckets[i];
       count += bucket.length;
     }
@@ -85,23 +91,19 @@ function HashMap() {
   }
 
   function clear() {
-
-    for(i = 0; i < buckets.length; i++) {
+    for (let i = 0; i < buckets.length; i++) {
       buckets[i] = [];
     }
-
   }
 
   function keys() {
-
     const keysArr = [];
 
-    for(i = 0; i < buckets.length; i++) {
+    for (let i = 0; i < buckets.length; i++) {
       const bucket = buckets[i];
 
-      for(j = 0; j < bucket.length; j++) {
-            keysArr.push(bucket[j].key);
-         
+      for (let j = 0; j < bucket.length; j++) {
+        keysArr.push(bucket[j].key);
       }
     }
 
@@ -109,13 +111,12 @@ function HashMap() {
   }
 
   function values() {
-
     const valuesArr = [];
 
-    for(i = 0; i < buckets.length; i++) {
+    for (let i = 0; i < buckets.length; i++) {
       const bucket = buckets[i];
 
-      for(j = 0; j < bucket.length; j++) {
+      for (let j = 0; j < bucket.length; j++) {
         valuesArr.push(bucket[j].value);
       }
     }
@@ -124,12 +125,12 @@ function HashMap() {
   }
 
   function entries() {
-        const entriesArr = [];
+    const entriesArr = [];
 
-    for(i = 0; i < buckets.length; i++) {
+    for (let i = 0; i < buckets.length; i++) {
       const bucket = buckets[i];
 
-      for(j = 0; j < bucket.length; j++) {
+      for (let j = 0; j < bucket.length; j++) {
         entriesArr.push([bucket[j].key, bucket[j].value]);
       }
     }
@@ -149,6 +150,5 @@ function HashMap() {
     _debugBuckets: buckets, // expose for debugging
   };
 }
-
 
 export default HashMap;
