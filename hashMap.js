@@ -115,6 +115,20 @@ function HashMap() {
 
     return valuesArr;
   }
+
+  function entries() {
+        const entriesArr = [];
+
+    for(i = 0; i < buckets.length; i++) {
+      const bucket = buckets[i];
+
+      for(j = 0; j < bucket.length; j++) {
+        entriesArr.push([bucket[j].key, bucket[j].value]);
+      }
+    }
+
+    return entriesArr;
+  }
   return {
     set,
     get,
@@ -124,6 +138,7 @@ function HashMap() {
     clear,
     keys,
     values,
+    entries,
     _debugBuckets: buckets, // expose for debugging
   };
 }
@@ -138,6 +153,7 @@ console.log(JSON.stringify(map._debugBuckets, null, 2));
 
 console.log(map.keys());
 console.log(map.values());
+console.log(map.entries());
 
 // map.clear();
 
