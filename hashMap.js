@@ -77,12 +77,20 @@ function HashMap() {
     return count;
   }
 
+  function clear() {
+
+    for(i = 0; i < buckets.length; i++) {
+      buckets[i] = [];
+    }
+
+  }
   return {
     set,
     get,
     has,
     remove,
     length,
+    clear,
     _debugBuckets: buckets, // expose for debugging
   };
 }
@@ -95,7 +103,11 @@ map.set("Carlos", "CTO"); // Updates value
 
 console.log(JSON.stringify(map._debugBuckets, null, 2));
 
-console.log(map.length());
+map.clear();
+
+console.log(JSON.stringify(map._debugBuckets,null,2));
+
+// console.log(map.length());
 
 // console.log(map.has("Carlos"));
 
